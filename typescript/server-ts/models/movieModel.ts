@@ -47,6 +47,6 @@ const movieSchema = new Schema<IMovie>({
   runtime: { type: Number, required: true },
 });
 
-const MovieModel = mongoose.model<IMovie>("User", movieSchema);
+const MovieModel = mongoose.model<IMovie>("Movie", movieSchema);
 
 export default MovieModel;

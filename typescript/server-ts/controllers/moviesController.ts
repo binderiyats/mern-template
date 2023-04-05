@@ -7,8 +7,27 @@ export const countAllMovies = async (req: Request, res: Response) => {
 
 export const getMovies = async (req: Request, res: Response) => {
   try {
-    const { limit = "5", skip = "0" } = req.query;
+    const { limit = "5", skip = "0", ordering = "releasedAsc" } = req.query;
+    let sort = "";
+    switch (ordering) {
+      case "releasedDesc":
+        sort = "-released";
+        break;
+      case "imdbRatingDesc":
+        sort = "-awards.wins";
+        break;
+      case "titleAsc":
+        sort = "title";
+        break;
+      case "titleDesc":
+        sort = "-title";
+        break;
+      default:
+        sort = "released";
+        break;
+    }
     const result: IMovie[] = await MovieModel.find({})
+      .sort(sort)
       .limit(Number(limit))
       .skip(Number(skip));
     res.json(result);
@@ -20,6 +39,7 @@ export const getMovies = async (req: Request, res: Response) => {
 export const getOneMovie = async (req: Request, res: Response) => {
   try {
     const { _id } = req.params;
+
     const result: IMovie | null = await MovieModel.findById(_id);
     res.json(result);
   } catch (error) {
