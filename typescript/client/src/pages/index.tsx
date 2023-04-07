@@ -1,13 +1,21 @@
-import { MovieCart } from "@/components/movie/MovieCart";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import { IMovie } from "@/interfaces/movie";
+import { MovieCart } from '@/components/movie/MovieCart';
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
+import { IMovie } from '@/interfaces/movie';
 
-export default function Home(): JSX.Element {
+export async function getStaticProps() {
+  const response = await fetch(`http://localhost:7070/api/movies?limit=12`);
+  const data = await response.json();
+  return {
+    props: { data },
+  };
+}
+
+export default function Home({ data }: { data: IMovie[] }): JSX.Element {
   const [movies, setMovies] = useState<IMovie[]>([]);
-  const [ordering, setOrdering] = useState<string>("");
+  const [ordering, setOrdering] = useState<string>('');
 
-  const placeHolder = "https://via.placeholder.com/160x230";
+  const placeHolder = 'https://via.placeholder.com/160x230';
 
   useEffect(() => {
     fetch(`http://localhost:7070/api/movies?limit=12&ordering=${ordering}`)

@@ -2,6 +2,8 @@ import { IMovie } from "@/interfaces/movie";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 
+export const getStaticPaths = ()
+
 const Index: FC = () => {
   const [movie, setMovie] = useState<IMovie | undefined>();
   const { query } = useRouter();
